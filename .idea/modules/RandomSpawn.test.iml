@@ -22,8 +22,7 @@
           </map>
         </userChosenTypes>
         <autoDetectTypes>
-          <platformType>PAPER</platformType>
-          <platformType>ADVENTURE</platformType>
+          <platformType>SPIGOT</platformType>
         </autoDetectTypes>
       </configuration>
     </facet>

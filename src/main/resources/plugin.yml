@@ -1,7 +1,7 @@
 name: RandomSpawn
 version: @version@
 main: Main.Main
-api-version: 1.18
+api-version: @api-version@
 authors: [ MEL_TEN, dalbodeule ]
 description: RandomSpawn
 commands:
