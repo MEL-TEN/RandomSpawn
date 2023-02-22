@@ -14,31 +14,30 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import javax.swing.*;
 import java.util.HashMap;
 
 public final class Main extends JavaPlugin implements Listener {
 
 	public static volatile HashMap<Player, Boolean> is_rsp_state;
-	//public static volatile HashMap<Player, Location> teleport_request;
-	//private static GameProcess gameProcess;
-	//private static SignalGenerator signalGenerator;
+	// public static volatile HashMap<Player, Location> teleport_request;
+	// private static GameProcess gameProcess;
+	// private static SignalGenerator signalGenerator;
 
 	@Override
 	public void onEnable() {
 		// Plugin startup logic
 		ServerConfig.ChatAlert( "Loading..");
 
-		getServer().getPluginManager().registerEvents(this, this);
+		this.getServer().getPluginManager().registerEvents(this, this);
 		is_rsp_state = new HashMap<Player, Boolean>();
-		//teleport_request = new HashMap<Player, Location>();
+		// teleport_request = new HashMap<Player, Location>();
 
-		//gameProcess = GameProcess.inst();
-		//signalGenerator = signalGenerator.inst();
-		//signalGenerator.setPlugin(this);
-		//signalGenerator.Initialize();
+		// gameProcess = GameProcess.inst();
+		// signalGenerator = signalGenerator.inst();
+		// signalGenerator.setPlugin(this);
+		// signalGenerator.Initialize();
 
-		//gameProcess.CycleStart();
+		// gameProcess.CycleStart();
 
 		ServerConfig.ChatAlert("Loading Compleate");
 	}
@@ -57,7 +56,7 @@ public final class Main extends JavaPlugin implements Listener {
 	public void join(PlayerJoinEvent event)
 	{
 		event.getPlayer().removePotionEffect(PotionEffectType.SLOW_FALLING);
-		if(is_rsp_state.get(event.getPlayer()) == null) is_rsp_state.put(event.getPlayer(), false);
+		is_rsp_state.putIfAbsent(event.getPlayer(), false);
 	}
 
 	@EventHandler
@@ -71,7 +70,7 @@ public final class Main extends JavaPlugin implements Listener {
 	}
 
 	@EventHandler
-	public void evvvv(PlayerMoveEvent event)
+	public void evvvv(PlayerMoveEvent event) // TODO: Not recommended work with PlayerMoveEvent
 	{
 		Player player = event.getPlayer();
 		if(is_rsp_state.get(player))
@@ -82,11 +81,16 @@ public final class Main extends JavaPlugin implements Listener {
 			int playerY = player_position.getBlockY();
 
 			World world = Bukkit.getWorld("world");
-			Block block = world.getHighestBlockAt(playerX, playerZ);
-			if (block.getLocation().getBlockY() + 3 > playerY)
+
+			if (world != null) // Prevent NPE
 			{
-				is_rsp_state.replace(player, false);
-				player.removePotionEffect(PotionEffectType.SLOW_FALLING);
+				Block block = world.getHighestBlockAt(playerX, playerZ);
+				if (block.getLocation().getBlockY() + 3 > playerY) {
+					is_rsp_state.replace(player, false);
+					player.removePotionEffect(PotionEffectType.SLOW_FALLING);
+				}
+			} else {
+				throw new NullPointerException("");
 			}
 		}
 	}
@@ -131,7 +135,7 @@ public final class Main extends JavaPlugin implements Listener {
 		calculatedZ = (int)(ratio * (double)ServerConfig.LimitZ);
 		location = new Location(world, calculatedX, ServerConfig.FixedY, calculatedZ);
 
-		Boolean success_teleport = false;
+		boolean success_teleport = false;
 
 		success_teleport = player.teleport(location);
 
@@ -146,7 +150,7 @@ public final class Main extends JavaPlugin implements Listener {
 			player.sendMessage(ChatColor.RED + "다른 위치로 이동 실패");
 		}
 
-		/*Thread thread = new Thread(() -> {
+		/* Thread thread = new Thread(() -> {
 			Block block;
 			Chunk chunk;
 			int calculatedX;
@@ -172,11 +176,11 @@ public final class Main extends JavaPlugin implements Listener {
 		});
 		thread.start();*/
 
-		//p.getStatistic(Statistic.PLAYER_KILLS);
-		//p.setStatistic(Statistic.PLAYER_KILLS, 0);
+		// p.getStatistic(Statistic.PLAYER_KILLS);
+		// p.setStatistic(Statistic.PLAYER_KILLS, 0);
 
-		//p.getStatistic(Statistic.DEATHS);
-		//p.setStatistic(Statistic.DEATHS, 0);
+		// p.getStatistic(Statistic.DEATHS);
+		// p.setStatistic(Statistic.DEATHS, 0);
 
 		return true;
 	}

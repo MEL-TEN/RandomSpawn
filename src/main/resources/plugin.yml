@@ -1,8 +1,8 @@
 name: RandomSpawn
-version: '${project.version}'
+version: @version@
 main: Main.Main
-api-version: 1.18
-authors: [ MEL_TEN ]
+api-version: @api-version@
+authors: [ MEL_TEN, dalbodeule ]
 description: RandomSpawn
 commands:
   rsp:
