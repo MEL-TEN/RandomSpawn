@@ -1,0 +1,10 @@
+name: RandomSpawn
+version: '${project.version}'
+main: Main.Main
+api-version: 1.18
+authors: [ MEL_TEN ]
+description: RandomSpawn
+commands:
+  rsp:
+    description: player random spawn
+    usage: /rsp
