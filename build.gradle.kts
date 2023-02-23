@@ -1,7 +1,11 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     `java-library`
+    kotlin("jvm") version "1.8.10"
+
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 repositories {
@@ -11,7 +15,12 @@ repositories {
     mavenLocal()
 }
 
+java.sourceCompatibility = JavaVersion.VERSION_17
+java.targetCompatibility = JavaVersion.VERSION_17
+
 dependencies {
+    implementation(kotlin("stdlib-jdk8"))
+
     compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT") {
         exclude("com.google.code.gson:gson")
         exclude("org.yaml:snakeyaml")
@@ -30,8 +39,6 @@ version = "${project.version}"
 
 description = "RandomSpawn"
 
-java.sourceCompatibility = JavaVersion.VERSION_17
-
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
@@ -49,4 +56,8 @@ tasks.withType<ProcessResources> {
    )
 
     filteringCharset = "UTF-8"
+}
+
+tasks.withType<ShadowJar> {
+    dependsOn("jar")
 }

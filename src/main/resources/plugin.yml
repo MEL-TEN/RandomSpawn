@@ -1,6 +1,6 @@
 name: RandomSpawn
 version: @version@
-main: Main.Main
+main: io.github.mel_ten.randomspawn.RandomSpawn
 api-version: @api-version@
 authors: [ MEL_TEN, dalbodeule ]
 description: RandomSpawn
